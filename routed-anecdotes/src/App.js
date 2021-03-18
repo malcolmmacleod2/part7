@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   Switch, Route, Link,
-  useRouteMatch, useParams
+  useRouteMatch, useParams, useHistory
 } from 'react-router-dom'
 import Anecdote from './Anecdote'
 
@@ -55,6 +55,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -64,6 +66,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    history.push("/");
   }
 
   return (
