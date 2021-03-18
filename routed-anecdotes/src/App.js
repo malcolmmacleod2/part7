@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import {
-  BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link,
+  useRouteMatch, useParams
 } from 'react-router-dom'
+import Anecdote from './Anecdote'
+
 
 const Menu = () => {
   const padding = {
@@ -21,7 +23,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} ><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
@@ -105,6 +107,13 @@ const App = () => {
     }
   ])
 
+  const id = useParams().id
+  const match = useRouteMatch('/anecdotes/:id')
+
+  const anecdote = match 
+  ? anecdotes.find(a => a.id === match.params.id)
+  : null
+
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
@@ -126,12 +135,16 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+
+
   return (
-    <Router>
       <div>
       <h1>Software anecdotes</h1>
       <Menu />
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdote={anecdote} />
+        </Route>
         <Route path="/about">
           <About />
         </Route>
@@ -144,7 +157,6 @@ const App = () => {
       </Switch>
       <Footer />
     </div>
-    </Router>
     
   )
 }
