@@ -10,6 +10,10 @@ const CreateNew = ({addNew}) => {
   const author = useField('text')
   const info = useField('text')
 
+  let { reset: resetContent, ...restOfContent } = content
+  let { reset: resetAuthor, ...restOfAuthor } = author
+  let { reset: resetInfo, ...restOfInfo } = info
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -36,21 +40,15 @@ const CreateNew = ({addNew}) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input type={content.type}
-          value={content.value}
-          onChange={content.onChange} />
+          <input {...restOfContent} />
         </div>
         <div>
           author
-          <input type={author.type}
-          value={author.value}
-          onChange={author.onChange}  />
+          <input {...restOfAuthor}  />
         </div>
         <div>
           url for more info
-          <input type={info.type}
-          value={info.value}
-          onChange={info.onChange}  />
+          <input {...restOfInfo}  />
         </div>
         <button>create</button>
         <button type="button" onClick={handleReset}>reset</button>
