@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 
 import blogService from './services/blogs'
@@ -10,14 +11,17 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Toggleable'
 
+import { createNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [notification, setNotification] = useState('')
   const [error, setError] = useState('')
   const [user, setUser] = useState(null)
+
+  const dispatch = useDispatch()
 
   const blogFormRef = useRef()
 
@@ -66,19 +70,14 @@ const App = () => {
       const response = await blogService.create(newBlog)
       console.log(response)
 
-      setNotification(
-        `A new blog '${response.title}' by ${response.author} has been added`
-      )
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      dispatch(createNotification(`A new blog '${response.title}' by ${response.author} has been added`, 5))
 
       blogFormRef.current.toggleVisibility()
 
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (exception) {
-      console.elog(exception)
+      console.log(exception)
     }
   }
 
@@ -101,7 +100,7 @@ const App = () => {
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (exception) {
-      console.elog(exception)
+      console.log(exception)
     }
   }
 
@@ -136,7 +135,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={notification} />
+      <Notification />
       <Error message={error} />
       <h2>blogs</h2>
 
