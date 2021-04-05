@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 
 import blogService from './services/blogs'
@@ -12,9 +12,9 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Toggleable'
 
 import { createNotification } from './reducers/notificationReducer'
+import { createBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -22,12 +22,13 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   const blogFormRef = useRef()
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+  const blogs = useSelector(state => state.blogs) 
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsAppUser')
@@ -67,22 +68,19 @@ const App = () => {
 
   const addBlog = async (newBlog) => {
     try {
-      const response = await blogService.create(newBlog)
-      console.log(response)
+      dispatch(createBlog(newBlog))
 
-      dispatch(createNotification(`A new blog '${response.title}' by ${response.author} has been added`, 5))
+      dispatch(createNotification(`A new blog '${newBlog.title}' by ${newBlog.author} has been added`, 5))
 
       blogFormRef.current.toggleVisibility()
 
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
     } catch (exception) {
       console.log(exception)
     }
   }
 
   const updateBlog = async (newBlog) => {
-    try {
+    /*try {
       const response = await blogService.put(newBlog)
       console.log(response)
 
@@ -90,18 +88,18 @@ const App = () => {
       setBlogs(blogs)
     } catch (exception) {
       console.log(exception)
-    }
+    }*/
   }
 
   const removeBlog = async (blog) => {
-    try {
+    /*try {
       await blogService.remove(blog)
 
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (exception) {
       console.log(exception)
-    }
+    }*/
   }
 
   const loginForm = () => {
@@ -137,12 +135,12 @@ const App = () => {
     <div>
       <Notification />
       <Error message={error} />
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
 
       {user === null && loginForm()}
       {user !== null && blogForm()}
 
-      {blogs.map((blog) => (
+      {blogs !== undefined && blogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
