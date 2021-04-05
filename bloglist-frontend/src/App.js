@@ -12,7 +12,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Toggleable'
 
 import { createNotification } from './reducers/notificationReducer'
-import { createBlog, initializeBlogs } from './reducers/blogReducer'
+import { createBlog, initializeBlogs, update, remove } from './reducers/blogReducer'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -80,26 +80,19 @@ const App = () => {
   }
 
   const updateBlog = async (newBlog) => {
-    /*try {
-      const response = await blogService.put(newBlog)
-      console.log(response)
-
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+    try {
+      dispatch(update(newBlog))
     } catch (exception) {
       console.log(exception)
-    }*/
+    }
   }
 
   const removeBlog = async (blog) => {
-    /*try {
-      await blogService.remove(blog)
-
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+    try {
+      dispatch(remove(blog))
     } catch (exception) {
       console.log(exception)
-    }*/
+    }
   }
 
   const loginForm = () => {

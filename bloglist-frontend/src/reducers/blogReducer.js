@@ -19,7 +19,30 @@ export const initializeBlogs = () => {
           data
         })
     }
+}
 
+export const update = (blog) => {
+  return async dispatch => {
+
+    const updated = await blogService.put(blog)
+
+    dispatch({
+        type: 'UPDATE',
+        data: updated
+      })
+  }
+}
+
+export const remove = (blog) => {
+  return async dispatch => {
+
+    await blogService.remove(blog)
+
+    dispatch({
+        type: 'REMOVE',
+        data: blog.id
+      })
+  }
 }
 
 const blogReducer = (state = [], action) => {
@@ -33,6 +56,22 @@ const blogReducer = (state = [], action) => {
 
     case 'INIT':
       return action.data
+
+    case 'UPDATE':
+      const updated = action.data
+    
+      state = state.map(blog =>
+        blog.id !== updated.id ? blog : updated 
+      )
+      return state
+
+    case 'REMOVE':
+      const deletedId = action.data
+
+      state = state.filter(blog =>
+        blog.id !== deletedId 
+      )
+      return state
 
     default:
       return state
