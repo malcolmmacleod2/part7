@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
+import Users from './components/Users'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -143,6 +144,8 @@ const App = () => {
           deleteBlog={removeBlog}
         />
       ))}
+
+      <Users />
     </div>
   )
 }
