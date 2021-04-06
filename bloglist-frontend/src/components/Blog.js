@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, updateBlog, deleteBlog, loggedInUser }) => {
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const blogStyle = {
@@ -14,6 +15,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, loggedInUser }) => {
 
   const hideBlogDetails = { display: showDetails ? 'none' : '' }
   const showBlogDetails = { display: showDetails ? '' : 'none' }
+  const loggedInUser = useSelector(state => state.user)
 
   const toggleShowDetails = () => {
     setShowDetails(!showDetails)
@@ -68,8 +70,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, loggedInUser }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   updateBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
+  deleteBlog: PropTypes.func.isRequired
 }
 
 export default Blog
