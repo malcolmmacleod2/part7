@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import userService from '../services/users'
+import User from './User'
 
 const Users = () => {
     const [users, setUsers] = useState([]) 
@@ -28,6 +29,7 @@ const Users = () => {
                     return <tr key={u.id}>
                         <td>{u.name}</td>
                         <td>{u.blogs.length}</td>
+                        <User user={u} />
                     </tr>
                 })}
             </tbody>
