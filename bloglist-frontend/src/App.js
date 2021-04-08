@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import Users from './components/Users'
+import User from './components/User'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 
 import Notification from './components/Notification'
 import Error from './components/Error'
@@ -16,10 +18,14 @@ import { createNotification } from './reducers/notificationReducer'
 import { createBlog, initializeBlogs, update, remove } from './reducers/blogReducer'
 import { login, logout } from './reducers/userReducer'
 
+import {
+  Switch, Route, useRouteMatch
+} from "react-router-dom"
+
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
+  const [users, setUsers] = useState([]) 
   const [error, setError] = useState('')
 
   const dispatch = useDispatch()
@@ -40,6 +46,17 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [dispatch])
+
+  useEffect(() => {
+
+      const fetchUsers = async () => {
+          const allUsers = await userService.getAll()
+          console.log(allUsers)
+          setUsers(allUsers)
+      }
+      
+      fetchUsers()
+  }, [])   
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -127,6 +144,11 @@ const App = () => {
     )
   }
 
+  const match = useRouteMatch('/users/:id')
+  const matchedUser = match 
+    ? users.find(u => u.id === match.params.id)
+    : null
+
   return (
     <div>
       <Notification />
@@ -145,7 +167,15 @@ const App = () => {
         />
       ))}
 
-      <Users />
+      <Switch>
+        <Route path="/users/:id">
+          <User user={matchedUser} />
+        </Route>
+        <Route path="/users">
+          <Users users={users}/>
+        </Route>
+      </Switch>
+
     </div>
   )
 }
