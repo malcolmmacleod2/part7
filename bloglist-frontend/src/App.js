@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
@@ -149,6 +150,17 @@ const App = () => {
     ? users.find(u => u.id === match.params.id)
     : null
 
+  const matchBlog = useRouteMatch('/blogs/:id')
+  const matchedBlog = matchBlog 
+    ? blogs.find(b => b.id === matchBlog.params.id)
+    : null
+
+  
+
+  console.log({blogs})
+  console.log({matchBlog})
+  console.log({matchedBlog})
+
   return (
     <div>
       <Notification />
@@ -156,26 +168,26 @@ const App = () => {
       <h2>Blogs</h2>
 
       {user === null && loginForm()}
-      {user !== null && blogForm()}
-
-      {blogs !== undefined && blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          updateBlog={updateBlog}
-          deleteBlog={removeBlog}
-        />
-      ))}
-
-      <Switch>
+      {user !== null && blogForm() }
+        <Switch>
         <Route path="/users/:id">
           <User user={matchedUser} />
         </Route>
         <Route path="/users">
           <Users users={users}/>
         </Route>
+        <Route path="/blogs/:id">
+          <Blog
+          blog={matchedBlog}
+          updateBlog={updateBlog}
+          deleteBlog={removeBlog}
+        />
+        <Route path="/">
+          <Blogs blogs={blogs}/>
+        </Route>
+        </Route>
       </Switch>
-
+      
     </div>
   )
 }

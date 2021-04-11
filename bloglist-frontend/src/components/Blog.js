@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 const Blog = ({ blog, updateBlog, deleteBlog }) => {
-  const [showDetails, setShowDetails] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -12,14 +11,13 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
-
-  const hideBlogDetails = { display: showDetails ? 'none' : '' }
-  const showBlogDetails = { display: showDetails ? '' : 'none' }
   const loggedInUser = useSelector(state => state.user)
 
-  const toggleShowDetails = () => {
-    setShowDetails(!showDetails)
+
+  if (!blog) {
+    return null
   }
+
 
   const updateLikes = async () => {
     const updatedBlog = {
@@ -42,16 +40,9 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 
   return (
     <div className="Blog" style={blogStyle}>
-      <div className="BlogSummary" style={hideBlogDetails}>
+      <div className="BlogDetails">
         <div>
           {blog.title} {blog.author}
-          <button className="showDetails" onClick={toggleShowDetails}>show</button>
-        </div>
-      </div>
-      <div className="BlogDetails" style={showBlogDetails}>
-        <div>
-          {blog.title} {blog.author}
-          <button className="hideDetails" onClick={toggleShowDetails}>hide</button>
         </div>
         <div>{blog.url}</div>
         <div className="BlogLikes">
@@ -68,7 +59,6 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
 }
 
 Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
   updateBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired
 }
