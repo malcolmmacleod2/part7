@@ -1,4 +1,4 @@
-const initialState = 'hello'
+const initialState = ''
 
 export const removeNotification = () => {
   return {

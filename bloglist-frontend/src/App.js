@@ -20,7 +20,7 @@ import { createBlog, initializeBlogs, update, remove } from './reducers/blogRedu
 import { login, logout } from './reducers/userReducer'
 
 import {
-  Switch, Route, useRouteMatch
+  Switch, Route, useRouteMatch, Link
 } from "react-router-dom"
 
 const App = () => {
@@ -28,6 +28,14 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [users, setUsers] = useState([]) 
   const [error, setError] = useState('')
+
+  const padding = {
+    padding: 5
+  }
+
+  const bar = {
+    backgroundColor: 'grey'
+  }
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -133,14 +141,45 @@ const App = () => {
   const blogForm = () => {
     return (
       <div>
-        <p>{user.name} logged in</p>
-        <button id='Logout' type="button" onClick={handleLogout}>
-          Logout
-        </button>
+       
+       <Switch>
+        <Route path="/users/:id">
+          <User user={matchedUser} />
+        </Route>
+        <Route path="/users">
+          <Users users={users}/>
+        </Route>
+        <Route path="/blogs/:id">
+          <Blog
+          blog={matchedBlog}
+          updateBlog={updateBlog}
+          deleteBlog={removeBlog}
+          />
+        </Route>
+        <Route path="/blogs">
+          <Togglable buttonLabel="Create blog" ref={blogFormRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          <Blogs blogs={blogs}/>
+        </Route>
+      </Switch>
+        
+      </div>
+    )
+  }
 
-        <Togglable buttonLabel="Create blog" ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} />
-        </Togglable>
+  const header = () => {
+    return (
+      <div style={bar}>
+        <Link style={padding} to="/blogs">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+        <span >
+          <span>{user.name} logged in</span>
+          <button id='Logout' type="button" onClick={handleLogout}>
+            Logout
+          </button>
+        </span>
+
       </div>
     )
   }
@@ -155,8 +194,6 @@ const App = () => {
     ? blogs.find(b => b.id === matchBlog.params.id)
     : null
 
-  
-
   console.log({blogs})
   console.log({matchBlog})
   console.log({matchedBlog})
@@ -165,29 +202,12 @@ const App = () => {
     <div>
       <Notification />
       <Error message={error} />
-      <h2>Blogs</h2>
+      
+      <h2>Blog app</h2>
 
       {user === null && loginForm()}
+      {user !== null && header() }
       {user !== null && blogForm() }
-        <Switch>
-        <Route path="/users/:id">
-          <User user={matchedUser} />
-        </Route>
-        <Route path="/users">
-          <Users users={users}/>
-        </Route>
-        <Route path="/blogs/:id">
-          <Blog
-          blog={matchedBlog}
-          updateBlog={updateBlog}
-          deleteBlog={removeBlog}
-        />
-        <Route path="/">
-          <Blogs blogs={blogs}/>
-        </Route>
-        </Route>
-      </Switch>
-      
     </div>
   )
 }

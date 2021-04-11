@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -13,11 +13,9 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
   const loggedInUser = useSelector(state => state.user)
 
-
   if (!blog) {
     return null
   }
-
 
   const updateLikes = async () => {
     const updatedBlog = {
