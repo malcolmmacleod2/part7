@@ -57,4 +57,30 @@ const remove = async (blog) => {
   }
 }
 
-export default { getAll, create, put, remove, setToken }
+const getComments = async (blog) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    }
+
+    const response = await axios.get(`${baseUrl}/${blog.id}/comments`, config)
+    return response.data
+  } catch (exception) {
+    console.error(exception)
+  }
+}
+
+const postComment = async (blog, comment) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    }
+
+    const response = await axios.post(`${baseUrl}/${blog.id}/comments`, comment, config)
+    return response.data
+  } catch (exception) {
+    console.error(exception)
+  }
+}
+
+export default { getAll, create, put, remove, setToken, getComments, postComment }

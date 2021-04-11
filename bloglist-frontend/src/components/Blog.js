@@ -48,6 +48,8 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
           <button onClick={updateLikes}>like</button>
         </div>
         <div>{blog?.user?.name}</div>
+        <h3>Comments</h3>
+        {blog?.comments.map((c, i) => <li key={i}>{c}</li>)}
         {loggedInUser?.username === blog?.user?.username && (
           <button className='Remove' onClick={removeBlog}>Remove</button>
         )}
