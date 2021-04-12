@@ -10,6 +10,17 @@ export const createBlog = (data) => {
     }
   }
 
+export const createComment = (blog, comment) => {
+  return async dispatch =>  {
+      const updatedBlog = await blogService.postComment(blog, comment)
+
+      dispatch({
+        type: 'CREATECOMMENT',
+        data: updatedBlog
+      })
+    }
+  }
+
 export const initializeBlogs = () => {
     
     return async dispatch => {
@@ -53,6 +64,14 @@ const blogReducer = (state = [], action) => {
 
     case 'CREATE':
       return state.concat(action.data)
+
+    case 'CREATECOMMENT':
+      const updatedWithComment = action.data
+    
+      state = state.map(blog =>
+        blog.id !== updatedWithComment.id ? blog : updatedWithComment 
+      )
+      return state
 
     case 'INIT':
       return action.data

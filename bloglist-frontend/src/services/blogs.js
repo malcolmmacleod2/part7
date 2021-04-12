@@ -59,11 +59,7 @@ const remove = async (blog) => {
 
 const getComments = async (blog) => {
   try {
-    const config = {
-      headers: { Authorization: token },
-    }
-
-    const response = await axios.get(`${baseUrl}/${blog.id}/comments`, config)
+    const response = await axios.get(`${baseUrl}/${blog.id}/comments`)
     return response.data
   } catch (exception) {
     console.error(exception)
@@ -72,11 +68,8 @@ const getComments = async (blog) => {
 
 const postComment = async (blog, comment) => {
   try {
-    const config = {
-      headers: { Authorization: token },
-    }
-
-    const response = await axios.post(`${baseUrl}/${blog.id}/comments`, comment, config)
+    const response = await axios.post(`${baseUrl}/${blog.id}/comments`, comment)
+    console.log({response})
     return response.data
   } catch (exception) {
     console.error(exception)

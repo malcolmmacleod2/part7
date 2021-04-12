@@ -16,7 +16,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Toggleable'
 
 import { createNotification } from './reducers/notificationReducer'
-import { createBlog, initializeBlogs, update, remove } from './reducers/blogReducer'
+import { createBlog, initializeBlogs, update, remove, createComment } from './reducers/blogReducer'
 import { login, logout } from './reducers/userReducer'
 
 import {
@@ -108,6 +108,15 @@ const App = () => {
     }
   }
 
+  const addComment = async (blog, newComment) => {
+    try {
+      dispatch(createComment(blog, newComment))
+
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const updateBlog = async (newBlog) => {
     try {
       dispatch(update(newBlog))
@@ -154,6 +163,7 @@ const App = () => {
           blog={matchedBlog}
           updateBlog={updateBlog}
           deleteBlog={removeBlog}
+          createComment={addComment}
           />
         </Route>
         <Route path="/blogs">
