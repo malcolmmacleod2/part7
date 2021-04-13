@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import CommentForm from './CommentForm'
+import { Button } from '@material-ui/core'
 
 const Blog = ({ blog, updateBlog, deleteBlog, createComment }) => {
 
@@ -46,14 +47,14 @@ const Blog = ({ blog, updateBlog, deleteBlog, createComment }) => {
         <div>{blog.url}</div>
         <div className="BlogLikes">
           likes {blog.likes}
-          <button onClick={updateLikes}>like</button>
+          <Button onClick={updateLikes}>like</Button>
         </div>
         <div>{blog?.user?.name}</div>
         <h3>Comments</h3>
         <CommentForm createComment={createComment} blog={blog} />
         {blog?.comments.map((c, i) => <li key={i}>{c}</li>)}
         {loggedInUser?.username === blog?.user?.username && (
-          <button className='Remove' onClick={removeBlog}>Remove</button>
+          <Button className='Remove' onClick={removeBlog}>Remove</Button>
         )}
       </div>
     </div>

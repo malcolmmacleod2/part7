@@ -1,19 +1,28 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from '@material-ui/core'
 
 const Blogs = ({blogs}) => {
-    return(<div>
-        <table>
-            <tbody>
+    return(
+    <TableContainer component={Paper}>
+        <Table>
+            <TableBody>
                 {blogs.map(b => {
-                    return <tr key={b.id}>
-                        <td><Link to={`/blogs/${b.id}`}>{b.title} {b.author}</Link></td>             
-                    </tr>
+                    return <TableRow key={b.id}>
+                        <TableCell><Link to={`/blogs/${b.id}`}>{b.title} {b.author}</Link></TableCell>             
+                    </TableRow>
                 })}
-            </tbody>
-        </table>
+            </TableBody>
+        </Table>
         
-    </div>)
+    </TableContainer>)
 }
 
 export default Blogs

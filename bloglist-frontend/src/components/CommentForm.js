@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { TextField, Button } from '@material-ui/core'
 
 const CommentForm = ({ blog, createComment }) => {
   const [comment, setComment] = useState('')
@@ -23,15 +24,15 @@ const CommentForm = ({ blog, createComment }) => {
     <div>
         <form onSubmit={handleCreate}>
         <div>
-          <input
-            id="comment"
+          <TextField
+            label="comment"
             type="comment"
             value={comment}
             name="Comment"
             onChange={handleCommentChange}
           />
         </div>
-        <button type="submit">create</button>
+        <Button type="submit">create</Button>
       </form>
     </div>
   )

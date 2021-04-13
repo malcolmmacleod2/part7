@@ -23,6 +23,9 @@ import {
   Switch, Route, useRouteMatch, Link
 } from "react-router-dom"
 
+import Container from '@material-ui/core/Container'
+import { Button } from '@material-ui/core'
+
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -185,9 +188,9 @@ const App = () => {
         <Link style={padding} to="/users">users</Link>
         <span >
           <span>{user.name} logged in</span>
-          <button id='Logout' type="button" onClick={handleLogout}>
+          <Button id='Logout' type="button" onClick={handleLogout}>
             Logout
-          </button>
+          </Button>
         </span>
 
       </div>
@@ -209,16 +212,19 @@ const App = () => {
   console.log({matchedBlog})
 
   return (
-    <div>
-      <Notification />
-      <Error message={error} />
-      
-      <h2>Blog app</h2>
+    <Container>
+      <div>
+        <Notification />
+        <Error message={error} />
+        
+        <h2>Blog app</h2>
 
-      {user === null && loginForm()}
-      {user !== null && header() }
-      {user !== null && blogForm() }
-    </div>
+        {user === null && loginForm()}
+        {user !== null && header() }
+        {user !== null && blogForm() }
+      </div>
+    </Container>
+    
   )
 }
 
